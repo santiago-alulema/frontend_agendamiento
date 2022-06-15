@@ -12,6 +12,8 @@ const validateJwt = (req,res = response,next) => {
         )
         req.uid = payload.uid
         req.username = payload.username
+        req.firstname = payload.firstname
+        req.lastname = payload.lastname
         req.email = payload.email
         next();
     } catch (error) {

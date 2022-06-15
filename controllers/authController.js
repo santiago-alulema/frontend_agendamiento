@@ -16,7 +16,7 @@ const createUser = async (req,res = response) => {
     user.password = await encryptPassword(req.body.password)
     await user.save();
     //generamos el JWT
-    const token = await generarJWT(user._id,user.username,user.email)
+    const token = await generarJWT(user._id,user.username,user.email,user.firstname,user.lastname)
     res.status(201).json({ok:true,
                         uid:user._id,
                         firstname: user.firstname,
@@ -45,7 +45,7 @@ const loginUser = async (req,res = response) => {
                 message:`Constraseña no valida`})
         }
         //generamos el JWT
-        const token = await generarJWT(user._id,user.username,user.email)
+        const token = await generarJWT(user._id,user.username,user.email,user.firstname,user.lastname)
 
         return res.status(200).json({ok:true,
                                     uid:user._id,
@@ -64,10 +64,16 @@ const renewUser = async (req,res = response) => {
     const uid = req.uid;
     const username = req.username;
     const email = req.email;
-    const token = await generarJWT(uid,username,email)
+    const firstname = req.firstname;
+    const lastname = req.lastname;
+    const token = await generarJWT(uid,username,email,firstname,lastname)
     console.log(username)
     res.json({
         ok:true,
+        uid,
+        firstname,
+        lastname,
+        username,
         token
     })
 }
